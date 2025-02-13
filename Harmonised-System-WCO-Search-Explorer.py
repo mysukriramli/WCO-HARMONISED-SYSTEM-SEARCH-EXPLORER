@@ -12,10 +12,24 @@ import pandas as pd
 import os
 import re
 from textblob import TextBlob
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text.TfidfVectorizer
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics.pairwise import cosine_similarity
+
+# Theme Configuration
+st.set_page_config(
+    page_title="WCO HS 2022 Explorer",
+    page_icon="🌐",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    theme={
+        "base": "light",
+        "primaryColor": "#0072ce",  # WCO Blue
+        "backgroundColor": "#d9d9d9",  # WCO Grey
+        "textColor": "#0072cd"
+    }
+)
 
 # 1. Data Loading
 repo_url = "https://github.com/datasets/harmonized-system.git"
@@ -119,17 +133,3 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown('<div class="title">WCO HS 2022 Explorer</div>', unsafe_allow_html=True)
-
-# Theme Configuration
-st.set_page_config(
-    page_title="WCO HS 2022 Explorer",
-    page_icon="🌐",
-    layout="wide",
-    initial_sidebar_state="expanded",
-    theme={
-        "base": "light",
-        "primaryColor": "#0072ce",  # WCO Blue
-        "backgroundColor": "#d9d9d9",  # WCO Grey
-        "textColor": "#0072cd"
-    }
-)
