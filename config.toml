@@ -1,0 +1,5 @@
+[theme]
+base = "light"
+primaryColor = "#0072ce"  # WCO Blue
+backgroundColor = "#d9d9d9"  # WCO Grey
+textColor = "#0072cd"
