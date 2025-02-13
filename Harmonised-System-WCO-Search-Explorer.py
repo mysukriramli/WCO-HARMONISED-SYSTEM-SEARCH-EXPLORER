@@ -15,8 +15,6 @@ from textblob import TextBlob
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
-import gensim
-from gensim.models import Word2Vec
 from sklearn.metrics.pairwise import cosine_similarity
 
 # 1. Data Loading
@@ -65,10 +63,6 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 model = LinearRegression()
 model.fit(X_train, y_train)
 
-# 4. Train Custom Word Embedding Model (Retrain on Startup)
-sentences = df['cleaned_description'].apply(lambda x: x.split()).tolist()
-custom_model = Word2Vec(sentences, vector_size=100, window=5, min_count=1, workers=4)  # Train the model
-
 # --- Streamlit Search Functionality ---
 
 def search_descriptions(search_term):
@@ -96,26 +90,13 @@ def search_descriptions(search_term):
             results = results.sort_values(by='predicted_relevance', ascending=False)
 
     if results.empty:
-        st.write(f"No results found for '{search_term}'. Try these:")
-        try:
-            suggestions = custom_model.wv.most_similar(search_term, topn=5)
-            st.write("Related terms:", suggestions)
-        except KeyError:
-            st.write(f"No related terms found for '{search_term}' in the word embedding model.")
+        st.write(f"No results found for '{search_term}'.")
     else:
         if 'predicted_relevance' in results.columns:
             results['relevance_percent'] = (results['predicted_relevance'] / results['predicted_relevance'].max()) * 100
-            st.dataframe(results[['hscode', 'description', 'section', 'sentiment', 'relevance_percent']])
+            st.dataframe(results[['hscode', 'description', 'section', 'relevance_percent']])
         else:
             st.write("No predicted relevance found for the search results.")
-
-        if not search_term.isdigit():
-            try:
-                suggestions = custom_model.wv.most_similar(search_term, topn=5)
-                st.write("Related terms:", suggestions)
-            except KeyError:
-                st.write(f"No related terms found for '{search_term}' in the word embedding model.")
-
 
 # --- Streamlit App ---
 st.title("WCO HS 2022 Explorer")
@@ -138,3 +119,17 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown('<div class="title">WCO HS 2022 Explorer</div>', unsafe_allow_html=True)
+
+# Theme Configuration
+st.set_page_config(
+    page_title="WCO HS 2022 Explorer",
+    page_icon="🌐",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    theme={
+        "base": "light",
+        "primaryColor": "#0072ce",  # WCO Blue
+        "backgroundColor": "#d9d9d9",  # WCO Grey
+        "textColor": "#0072cd"
+    }
+)
