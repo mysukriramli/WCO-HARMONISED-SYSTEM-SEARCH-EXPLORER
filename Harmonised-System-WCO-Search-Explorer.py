@@ -12,7 +12,7 @@ import pandas as pd
 import os
 import re
 from textblob import TextBlob
-from sklearn.feature_extraction.text.TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics.pairwise import cosine_similarity
@@ -62,7 +62,7 @@ if 'description' in df.columns:
 
 if 'section' in df.columns:
     section_counts = df['section'].value_counts()
-    top_20_sections = section_counts.index[:20]
+    top 20 sections = section_counts.index[:20]
     df_top20 = df[df['section'].isin(top_20_sections)]
 
 if 'description' in df.columns:
