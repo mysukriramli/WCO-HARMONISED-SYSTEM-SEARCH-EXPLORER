@@ -62,7 +62,7 @@ if 'description' in df.columns:
 
 if 'section' in df.columns:
     section_counts = df['section'].value_counts()
-    top 20 sections = section_counts.index[:20]
+    top_20_sections = section_counts.index[:20]
     df_top20 = df[df['section'].isin(top_20_sections)]
 
 if 'description' in df.columns:
